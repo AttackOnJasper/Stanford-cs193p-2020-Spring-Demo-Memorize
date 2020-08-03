@@ -31,9 +31,9 @@ class EmojiMemoryGame: ObservableObject {
     private var memoryGame: MemoryGame<String> = createMemoryGame()
         
     // Add static keyword to properly initialize class property
-    static func createMemoryGame() -> MemoryGame<String> {
-        let emojis: Array<String> = ["👻", "🎃"]
-        return MemoryGame<String>(numberOfPairsOfCard: 2) {index in
+    private static func createMemoryGame() -> MemoryGame<String> {
+        let emojis: Array<String> = ["👻", "🎃", "🕷"]
+        return MemoryGame<String>(numberOfPairsOfCard: 3) {index in
             return emojis[index]
         }
     }

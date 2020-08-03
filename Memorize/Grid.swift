@@ -8,7 +8,8 @@
 
 import SwiftUI
 
-struct Grid<Item, ItemView>: View {
+// Item needs to be Identifiable to be iterated in ForEach. Here the generics are connected to protocols to give constrains
+struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
     var items: [Item]
     var viewForItem: (Item) -> ItemView
     
@@ -19,6 +20,22 @@ struct Grid<Item, ItemView>: View {
     }
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        GeometryReader { geometry in
+            self.body(for: GridLayout(itemCount: self.items.count, in: geometry.size))
+        }
+    }
+    
+    func body(for layout: GridLayout) -> some View {
+        ForEach(items) { item in
+            self.body(for: item, in: layout)
+        }
+    }
+    
+    func body(for item: Item, in layout: GridLayout) -> some View {
+        let index = self.items.firstIndex(matching: item)! // index should never be nil
+        return viewForItem(item)
+            .frame(width: layout.itemSize.width, height: layout.itemSize.height)
+            .position(layout.location(ofItemAt: index))
+        
     }
 }

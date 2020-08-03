@@ -20,7 +20,7 @@ struct ContentView: View {
 //            // Attaching model to view via ViewModel
 //            ForEach(viewModel.cards) { card in // any iterations of identifiables (i.e. can identify one element from another) can be put into ForEach
 //                CardView(card: card).onTapGesture{
-//                    self.viewModel.chooseCard(card: card) // expressing intents
+//                    self.viewModel.chooseCard(card: card)
 //                }
 //            }
 //        }
@@ -28,6 +28,7 @@ struct ContentView: View {
             CardView(card: card).onTapGesture{
                 self.viewModel.chooseCard(card: card) // expressing intents
             }
+            .padding(5)
         }
         .padding() // around the outer stack
         .foregroundColor(Color.orange)
@@ -45,7 +46,9 @@ struct CardView: View {
                     RoundedRectangle(cornerRadius: self.cornerRadius).stroke(lineWidth: self.edgeLineWidth) // one view
                     Text(self.card.content) // another view
                 } else {
-                    RoundedRectangle(cornerRadius: self.cornerRadius).fill()
+                    if !self.card.isMatched {
+                        RoundedRectangle(cornerRadius: self.cornerRadius).fill()
+                    }
                 }
             }
             .font(Font.system(size: min(geometry.size.width, geometry.size.height * self.fontScaleFactor)))
@@ -54,9 +57,9 @@ struct CardView: View {
     }
     
     // MARK: - Drawing Constants
-    let cornerRadius: CGFloat = 10.0
-    let edgeLineWidth: CGFloat = 3
-    let fontScaleFactor: CGFloat = 0.75
+    private let cornerRadius: CGFloat = 10.0
+    private let edgeLineWidth: CGFloat = 3
+    private let fontScaleFactor: CGFloat = 0.75
 }
 
 
